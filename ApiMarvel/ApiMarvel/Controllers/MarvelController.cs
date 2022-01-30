@@ -73,7 +73,7 @@ namespace ApiMarvel.Controllers
                             arq.Close();
                         }
 
-                        return result;
+                        return result.data.results;
                     }
                     else
                     {
