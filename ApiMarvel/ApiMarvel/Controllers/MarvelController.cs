@@ -40,8 +40,6 @@ namespace ApiMarvel.Controllers
 
                     if (response != null)
                     {
-
-
                         var result = JsonConvert.DeserializeObject<Personagem>(response);
 
                         using (StreamWriter arq = new StreamWriter(directory + "\\personagensmarvel.txt"))
