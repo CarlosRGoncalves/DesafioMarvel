@@ -19,6 +19,10 @@ namespace ApiMarvel.Controllers
         public MarvelController(IConfiguration configuration) => Configuration = configuration;
 
         [HttpGet("Personagens")]
+        [ProducesResponseType(typeof(Personagem), (int)StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Retorno), (int)StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Retorno), (int)StatusCodes.Status400BadRequest)]
+
         public async Task<object> ConsumoApi()
         {
             try
@@ -76,13 +80,13 @@ namespace ApiMarvel.Controllers
                     }
                     else
                     {
-                        return StatusCodes.Status404NotFound;
+                        return new Retorno { code = StatusCodes.Status200OK, mensagem = "Nenhum item encontrado!!!"};
                     }
                 }
             }
             catch (Exception e)
             {
-                return StatusCodes.Status400BadRequest;
+                return new Retorno { code = StatusCodes.Status400BadRequest, mensagem = "Aconteceu um erro inesperado!!!" };
             }
 
 
