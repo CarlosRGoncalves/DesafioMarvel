@@ -18,12 +18,12 @@ namespace ApiMarvel.Controllers
 
         public MarvelController(IConfiguration configuration) => Configuration = configuration;
 
-        [HttpGet]
+        [HttpGet("Personagens")]
         public async Task<object> ConsumoApi()
-
         {
             try
             {
+
                 using (var client = new HttpClient())
                 {
 
@@ -38,31 +38,32 @@ namespace ApiMarvel.Controllers
 
                     var response = await client.GetStringAsync(Url + "?apikey=" + apikey + "&ts=" + ts + "&hash=" + hash);
 
+                    
                     if (response != null)
                     {
                         var result = JsonConvert.DeserializeObject<Personagem>(response);
 
                         using (StreamWriter arq = new StreamWriter(directory + "\\personagensmarvel.txt"))
                         {
-                            foreach (var pertxt in result.data.results)
+                            foreach (var character in result.data.results)
                             {
-                                arq.Write("ID:" + pertxt.id + "\n" + "Nome:" + pertxt.name + "\n" + "Descricao:" + pertxt.description + "\n");
+                                arq.Write("ID:" + character.id + "\n" + "Nome:" + character.name + "\n" + "Descricao:" + character.description + "\n");
 
-                                foreach (var pertxt2 in pertxt.comics.items)
+                                foreach (var comic in character.comics.items)
                                 {
-                                    arq.Write("Comics:" + pertxt2.name + "\n");
+                                    arq.Write("Comics:" + comic.name + "\n");
                                 }
-                                foreach (var pertxt3 in pertxt.series.items)
+                                foreach (var series in character.series.items)
                                 {
-                                    arq.Write("Series:" + pertxt3.name + "\n");
+                                    arq.Write("Series:" + series.name + "\n");
                                 }
-                                foreach (var pertxt4 in pertxt.stories.items)
+                                foreach (var story in character.stories.items)
                                 {
-                                    arq.Write("Stories:" + pertxt4.name + "\n");
+                                    arq.Write("Stories:" + story.name + "\n");
                                 }
-                                foreach (var pertxt5 in pertxt.events.items)
+                                foreach (var events in character.events.items)
                                 {
-                                    arq.Write("Events:" + pertxt5.name + "\n");
+                                    arq.Write("Events:" + events.name + "\n");
                                 }
 
                                 arq.Write("----------------------------------------------------------------------------------- \n");
@@ -75,12 +76,8 @@ namespace ApiMarvel.Controllers
                     }
                     else
                     {
-                        return StatusCodes.Status200OK;
+                        return StatusCodes.Status404NotFound;
                     }
-
-
-
-
                 }
             }
             catch (Exception e)
@@ -92,6 +89,8 @@ namespace ApiMarvel.Controllers
 
 
         }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         public string GerarHash(string ts, string apikey, string privatekey)
         {
 
