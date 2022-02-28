@@ -15,6 +15,7 @@ namespace ApiMarvel.Controllers
     public class MarvelController : ControllerBase
     {
         private readonly IConfiguration Configuration;
+        int a = 0;
 
         public MarvelController(IConfiguration configuration) => Configuration = configuration;
 
@@ -32,9 +33,13 @@ namespace ApiMarvel.Controllers
                 {
 
                     var Url = Configuration["ConfigsAPI:BaseURL"];
+
                     string apikey = Configuration["ConfigsAPI:PublicKey"];
+
                     string privatekey = Configuration["ConfigsAPI:PrivateKey"]; //colocar .env
+
                     string ts = DateTime.Now.Ticks.ToString();
+
                     string hash = GerarHash(ts, apikey,
                                 privatekey);
 
